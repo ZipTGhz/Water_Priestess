@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SpecialAttackBehaviour : StateMachineBehaviour
 {
+    private PlayerCombat _playerCombat;
+
     private bool _hasActionExecuted;
     private readonly float _endFirst = 60f / 155f;
 
@@ -12,8 +14,11 @@ public class SpecialAttackBehaviour : StateMachineBehaviour
         int layerIndex
     )
     {
-        PlayerCombat.Instance.ShowSpecialAttackFirst = true;
-        PlayerCombat.Instance.ShowSpecialAttackSecond = true;
+        if (_playerCombat == null)
+            _playerCombat = animator.GetComponent<PlayerCombat>();
+
+        _playerCombat.ShowSpecialAttackFirst = true;
+        _playerCombat.ShowSpecialAttackSecond = true;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -25,7 +30,7 @@ public class SpecialAttackBehaviour : StateMachineBehaviour
     {
         if (!_hasActionExecuted && stateInfo.normalizedTime >= _endFirst)
         {
-            PlayerCombat.Instance.ShowSpecialAttackFirst = false;
+            _playerCombat.ShowSpecialAttackFirst = false;
             _hasActionExecuted = true; // Ensure the action is executed only once
         }
     }
@@ -33,7 +38,7 @@ public class SpecialAttackBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        PlayerCombat.Instance.ShowSpecialAttackSecond = false;
+        _playerCombat.ShowSpecialAttackSecond = false;
         _hasActionExecuted = false;
     }
 }

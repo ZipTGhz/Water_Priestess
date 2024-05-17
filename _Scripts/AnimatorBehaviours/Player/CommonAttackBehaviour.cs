@@ -18,7 +18,7 @@ public class CommonAttackBehaviour : StateMachineBehaviour
     {
         if (PlayerInput.Instance.IsCommonAttackPressed)
         {
-            animator.SetTrigger(PlayerInput.Instance.CommonAttackHash);
+            animator.SetTrigger(NameHash.CommonAttackTrigger);
         }
     }
 

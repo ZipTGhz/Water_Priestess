@@ -4,6 +4,7 @@ public class CustomMonoBehaviour : MonoBehaviour
 {
     protected virtual void Awake()
     {
+        LoadDynamicData();
         LoadComponents();
         // LoadDefaultValues();
     }
@@ -11,8 +12,11 @@ public class CustomMonoBehaviour : MonoBehaviour
     protected virtual void Reset()
     {
         LoadComponents();
+        LoadDynamicData();
         LoadDefaultValues();
     }
+
+    protected virtual void LoadDynamicData() { }
 
     protected virtual void LoadDefaultValues() { }
 

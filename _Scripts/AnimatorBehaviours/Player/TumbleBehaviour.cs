@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class TumbleBehaviour : StateMachineBehaviour
 {
+    private PlayerController _playerController;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(
         Animator animator,
@@ -9,12 +11,14 @@ public class TumbleBehaviour : StateMachineBehaviour
         int layerIndex
     )
     {
+        if (_playerController == null)
+            _playerController = animator.GetComponentInParent<PlayerController>();
+
         PlayerInput.Instance.IsTumbleInProgress = true;
 
-        Transform transform = animator.GetComponent<Transform>();
-
-        PlayerInput.Instance.SetVelocity(
-            new Vector2(transform.right.x * PlayerInput.Instance.TumbleForce, 0)
+        _playerController.Rb.velocity = new Vector2(
+            _playerController.GFX.right.x * PlayerInput.Instance.TumbleForce,
+            0
         );
     }
 
