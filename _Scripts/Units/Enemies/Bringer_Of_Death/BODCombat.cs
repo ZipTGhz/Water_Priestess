@@ -29,14 +29,14 @@ public class BODCombat : CustomMonoBehaviour
         _playerMask = 256;
 
         //COMMON ATTACK
-        _commonAttackPoint = new Vector2(1.75f, 1f);
-        _commonAttackSize = new Vector2(2.75f, 2f);
+        _commonAttackPoint = new Vector2(1.5f, 1f);
+        _commonAttackSize = new Vector2(3.25f, 2f);
     }
 
     public void DoCommonAttack()
     {
         // USING RAYCAST
-        Collider2D hitInfo = Physics2D.OverlapBox(
+        Collider2D colliderInfo = Physics2D.OverlapBox(
             (Vector2)transform.position
                 + (Vector2)(transform.right + transform.up) * _commonAttackPoint,
             _commonAttackSize,
@@ -44,10 +44,11 @@ public class BODCombat : CustomMonoBehaviour
             _playerMask
         );
 
-        if (hitInfo == null)
+        if (colliderInfo == null)
             return;
-
-        _bodController.DamageSender.Send(hitInfo, 1f);
+        colliderInfo
+            .GetComponent<IDamageable>()
+            .TakeHP(_bodController.CurrentStats.CurAtkDmg);
     }
 
     void OnDrawGizmos()

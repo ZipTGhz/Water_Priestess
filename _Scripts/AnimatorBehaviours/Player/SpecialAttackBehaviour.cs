@@ -3,7 +3,7 @@ using UnityEngine;
 public class SpecialAttackBehaviour : StateMachineBehaviour
 {
     private PlayerCombat _playerCombat;
-
+    private IMPUser _mpUser;
     private bool _hasActionExecuted;
     private readonly float _endFirst = 60f / 155f;
 
@@ -15,7 +15,11 @@ public class SpecialAttackBehaviour : StateMachineBehaviour
     )
     {
         if (_playerCombat == null)
+        {
             _playerCombat = animator.GetComponent<PlayerCombat>();
+            _mpUser = animator.GetComponentInParent<IMPUser>();
+        }
+        _mpUser.UseMP(UtilTool.BaseStats.SpecialAtkManaCost);
 
         _playerCombat.ShowSpecialAttackFirst = true;
         _playerCombat.ShowSpecialAttackSecond = true;

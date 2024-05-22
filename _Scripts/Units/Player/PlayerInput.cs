@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,26 +14,7 @@ public class PlayerInput : CustomMonoBehaviour
 
     [Header("CONFIGS")]
     [SerializeField]
-    private float _moveSpeed;
-
-    [SerializeField]
-    private float _jumpForce;
-
-    [SerializeField]
     private float _airAttackFallSpeed;
-
-    [SerializeField]
-    private float _tumbleForce;
-
-    [Header("COOLDOWN")]
-    [SerializeField]
-    private float _skillCoolDown;
-
-    [SerializeField]
-    private float _specialAttackCoolDown;
-
-    [SerializeField]
-    private float _tumbleCoolDown;
 
     [Header("RAYCAST")]
     [SerializeField]
@@ -42,10 +24,12 @@ public class PlayerInput : CustomMonoBehaviour
     private Vector2 _boxSize;
 
     [SerializeField]
-    private LayerMask _groundLayer;
+    private LayerMask _groundCoderLayer;
+
+    [SerializeField]
+    private LayerMask _waterUserLayer;
 
     //VARIABLES
-
 
     private Vector2 _dirInput;
     private Vector2 _dir;
@@ -54,25 +38,16 @@ public class PlayerInput : CustomMonoBehaviour
     private bool _canCommonAttack;
     private bool _isCommonAttackPressed;
     private bool _isTumbleInProgress;
+    private bool _isBusyInput;
 
     private float _skillTime;
     private float _specialAttackTime;
     private float _tumbleTime;
 
-    private bool _invulnerable;
-
-    //GETTERS
-    public bool IsCommonAttackPressed => _isCommonAttackPressed;
-
-    public float AirAttackFallSpeed => _airAttackFallSpeed;
-    public float TumbleForce => _tumbleForce;
-
-    public Vector2 DirInput => _dirInput;
-
-    //SETTERS
-
-
     //GETTERS AND SETTERS
+    public bool IsCommonAttackPressed => _isCommonAttackPressed;
+    public float AirAttackFallSpeed => _airAttackFallSpeed;
+    public Vector2 DirInput => _dirInput;
     public Vector2 Dir
     {
         get => _dir;
@@ -85,16 +60,15 @@ public class PlayerInput : CustomMonoBehaviour
         set => _canCommonAttack = value;
     }
 
-    public bool Invulnerable
-    {
-        get => _invulnerable;
-        set => _invulnerable = value;
-    }
-
     public bool IsTumbleInProgress
     {
         get => _isTumbleInProgress;
         set => _isTumbleInProgress = value;
+    }
+    public bool IsBusyInput
+    {
+        get => _isBusyInput;
+        set => _isBusyInput = value;
     }
 
     protected override void Awake()
@@ -115,20 +89,64 @@ public class PlayerInput : CustomMonoBehaviour
     protected override void LoadDefaultValues()
     {
         //CONFIGS
-        _moveSpeed = 4f;
-        _jumpForce = 15f;
         _airAttackFallSpeed = 1f;
-        _tumbleForce = 8f;
-
-        //COOLDOWN
-        _skillCoolDown = 3f;
-        _specialAttackCoolDown = 5f;
-        _tumbleCoolDown = 1.5f;
 
         //RAYCAST
         _boxOffset = new Vector2(0.015f, 0.03f);
         _boxSize = new Vector2(0.59f, 0.05f);
-        _groundLayer = 64;
+        _groundCoderLayer = LayerMask.GetMask("Ground", "Water");
+        _waterUserLayer = LayerMask.NameToLayer("Water");
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        CheckCanSurf(collision.gameObject.layer);
+    }
+
+    private void CheckCanSurf(int layer)
+    {
+        _playerController.Animator.SetBool(NameHash.CanSurfBool, layer == _waterUserLayer);
+    }
+
+    private void Update()
+    {
+        CheckPlayerMovementOnWater();
+    }
+
+    private Vector2 _lastDir = Vector2.zero;
+    private Coroutine _waterCollisionCoroutine = null;
+
+    private void CheckPlayerMovementOnWater()
+    {
+        if (_dir.magnitude != 0 && _lastDir.magnitude == 0)
+        {
+            if (_waterCollisionCoroutine != null)
+                StopCoroutine(_waterCollisionCoroutine);
+
+            Physics2D.IgnoreLayerCollision(
+                LayerMask.NameToLayer("Player"),
+                LayerMask.NameToLayer("Water"),
+                false
+            );
+        }
+        else if (_dir.magnitude == 0 && _lastDir.magnitude != 0)
+        {
+            if (_waterCollisionCoroutine != null)
+                StopCoroutine(_waterCollisionCoroutine);
+            _waterCollisionCoroutine = StartCoroutine(DisableWaterCollisionWithDelay());
+        }
+        _lastDir = _dir;
+    }
+
+    IEnumerator DisableWaterCollisionWithDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Physics2D.IgnoreLayerCollision(
+            LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Water"),
+            true
+        );
+        _waterCollisionCoroutine = null;
     }
 
     private void FixedUpdate()
@@ -142,7 +160,7 @@ public class PlayerInput : CustomMonoBehaviour
     {
         if (_isTumbleInProgress == false)
             _playerController.Rb.velocity = new Vector2(
-                _dir.x * _moveSpeed,
+                _dir.x * _playerController.CurrentStats.CurSPD,
                 _playerController.Rb.velocity.y
             );
         _playerController.Animator.SetFloat(NameHash.XFloat, Mathf.Abs(_dir.x));
@@ -154,7 +172,7 @@ public class PlayerInput : CustomMonoBehaviour
         {
             _playerController.Rb.velocity = new Vector2(
                 _playerController.Rb.velocity.x,
-                _jumpForce
+                _playerController.CurrentStats.JumpForce
             );
         }
         else if (_dir.y < -0.01f && IsGrounded())
@@ -162,7 +180,7 @@ public class PlayerInput : CustomMonoBehaviour
             if (Time.time > _tumbleTime)
             {
                 _playerController.Animator.SetTrigger(NameHash.TumbleTrigger);
-                _tumbleTime = Time.time + _tumbleCoolDown;
+                _tumbleTime = Time.time + _playerController.CurrentStats.DashCD;
             }
         }
         _playerController.Animator.SetFloat(NameHash.YFloat, _playerController.Rb.velocity.y);
@@ -186,7 +204,7 @@ public class PlayerInput : CustomMonoBehaviour
                 0,
                 -transform.up,
                 0f,
-                _groundLayer
+                _groundCoderLayer
             )
         )
             return true;
@@ -215,19 +233,27 @@ public class PlayerInput : CustomMonoBehaviour
 
     private void OnSpecialAttack(InputAction.CallbackContext context)
     {
+        if (
+            _isBusyInput
+            || _playerController.CurrentStats.CurMP < UtilTool.BaseStats.SpecialAtkManaCost
+        )
+            return;
         if (Time.time > _specialAttackTime)
         {
             _playerController.Animator.SetTrigger(NameHash.SpecialAttackTrigger);
-            _specialAttackTime = Time.time + _specialAttackCoolDown;
+            _specialAttackTime = Time.time + _playerController.CurrentStats.SpecialAtkCD;
         }
     }
 
     private void OnSkill(InputAction.CallbackContext context)
     {
+        if (_isBusyInput || _playerController.CurrentStats.CurMP < UtilTool.BaseStats.SkillManaCost)
+            return;
+
         if (Time.time > _skillTime)
         {
             _playerController.Animator.SetTrigger(NameHash.SkillTrigger);
-            _skillTime = Time.time + _skillCoolDown;
+            _skillTime = Time.time + _playerController.CurrentStats.SkillCD;
         }
     }
 

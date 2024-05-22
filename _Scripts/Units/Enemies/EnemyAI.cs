@@ -11,9 +11,6 @@ public abstract class EnemyAI : CustomMonoBehaviour
 
     [Header("CONFIGS")]
     [SerializeField]
-    protected float moveSpeed;
-
-    [SerializeField]
     protected float leftX;
 
     [SerializeField]
@@ -27,12 +24,6 @@ public abstract class EnemyAI : CustomMonoBehaviour
 
     [SerializeField]
     protected Vector2 _detectSize;
-
-    [SerializeField]
-    protected float attackCoolDown;
-
-    [SerializeField]
-    protected float observeCoolDown;
 
     private readonly float _radius = 0.5f;
 
@@ -67,7 +58,7 @@ public abstract class EnemyAI : CustomMonoBehaviour
 
     protected override void LoadDefaultValues()
     {
-        _playerMask = 256;
+        _playerMask = LayerMask.GetMask("Player");
         leftX = rightX = transform.position.x;
     }
 
@@ -104,14 +95,17 @@ public abstract class EnemyAI : CustomMonoBehaviour
             if (distanceToTarget < 3f && Time.time >= _attackNextTime)
             {
                 _enemyController.Animator.SetTrigger(NameHash.CommonAttackTrigger);
-                _attackNextTime = Time.time + attackCoolDown;
+                _attackNextTime = Time.time + _enemyController.CurrentStats.CurAtkCD;
             }
         }
     }
 
     protected virtual void Move()
     {
-        _enemyController.Rb.velocity = new Vector2(moveSpeed * _dirX, 0f);
+        _enemyController.Rb.velocity = new Vector2(
+            _enemyController.CurrentStats.CurSPD * _dirX,
+            0f
+        );
     }
 
     protected virtual float MoveToTarget()
@@ -123,7 +117,10 @@ public abstract class EnemyAI : CustomMonoBehaviour
         float distanceToTarget = Mathf.Abs(xEnemy - xPlayer);
         //Nếu như người chơi nằm trong vùng nhìn thấy của đối tượng, tiến hành di chuyển
         if (leftX <= xPlayer && xPlayer <= rightX)
-            _enemyController.Rb.velocity = new Vector2(moveSpeed * _dirX, 0f);
+            _enemyController.Rb.velocity = new Vector2(
+                _enemyController.CurrentStats.CurSPD * _dirX,
+                0f
+            );
 
         return distanceToTarget;
     }
@@ -146,7 +143,7 @@ public abstract class EnemyAI : CustomMonoBehaviour
         if (_isFacingRight && xPlayer < xEnemy || !_isFacingRight && xPlayer > xEnemy)
             return;
 
-        _observeTime = observeCoolDown;
+        _observeTime = _enemyController.CurrentStats.CurObserveCD;
 
         Debug.Log("DETECTED PLAYER IN RANGE");
         _isDetectedPlayer = true;

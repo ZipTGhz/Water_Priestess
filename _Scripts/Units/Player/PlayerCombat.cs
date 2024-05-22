@@ -19,6 +19,9 @@ public class PlayerCombat : CustomMonoBehaviour
     [SerializeField]
     private Vector2 _airAttackSize;
 
+    [SerializeField]
+    private float _airAttackMultiplier;
+
     [Header("FIRST ATTACK")]
     [SerializeField]
     private bool _showFirstAttackHitBox;
@@ -28,6 +31,9 @@ public class PlayerCombat : CustomMonoBehaviour
 
     [SerializeField]
     private Vector2 _firstAttackSize;
+
+    [SerializeField]
+    private float _firstAttackMultiplier;
 
     [Header("SECOND ATTACK")]
     [SerializeField]
@@ -39,6 +45,9 @@ public class PlayerCombat : CustomMonoBehaviour
     [SerializeField]
     private Vector2 _secondAttackSize;
 
+    [SerializeField]
+    private float _secondAttackMultiplier;
+
     [Header("THIRD ATTACK")]
     [SerializeField]
     private bool _showThirdAttackHitBox;
@@ -48,6 +57,9 @@ public class PlayerCombat : CustomMonoBehaviour
 
     [SerializeField]
     private Vector2 _thirdAttackSize;
+
+    [SerializeField]
+    private float _thirdAttackMultiplier;
 
     [Header("SPECIAL ATTACK FIRST PHASE")]
     [SerializeField]
@@ -59,6 +71,9 @@ public class PlayerCombat : CustomMonoBehaviour
     [SerializeField]
     private Vector2 _specialAttackFirstSize;
 
+    [SerializeField]
+    private float _specialAttackFirstMultiplier;
+
     [Header("SPECIAL ATTACK SECOND PHASE")]
     [SerializeField]
     private bool _showSpecialAttackSecond;
@@ -69,9 +84,12 @@ public class PlayerCombat : CustomMonoBehaviour
     [SerializeField]
     private Vector2 _specialAttackSecondSize;
 
+    [SerializeField]
+    private float _specialAttackSecondMultiplier;
+
     private readonly Collider2D[] _enemyHits = new Collider2D[32];
 
-    //SETTERS
+    //GETTERS & SETTERS
     public bool ShowAirAttackHitBox
     {
         set => _showAirAttackHitBox = value;
@@ -139,14 +157,14 @@ public class PlayerCombat : CustomMonoBehaviour
             _enemyHits,
             _enemyLayer
         );
-
         if (size == 0)
             return;
 
-        for (int i = 0; i < size; ++i)
-        {
-            _playerController.DamageSender.Send(_enemyHits[i], 1f);
-        }
+        UtilTool.Combat.DamageAllTargetNonAlloc(
+            _enemyHits,
+            size,
+            _playerController.CurrentStats.CurAtkDmg * _airAttackMultiplier / 100f
+        );
     }
 
     public void DoFirstAttack()
@@ -159,14 +177,14 @@ public class PlayerCombat : CustomMonoBehaviour
             _enemyHits,
             _enemyLayer
         );
-
         if (size == 0)
             return;
 
-        for (int i = 0; i < size; ++i)
-        {
-            _playerController.DamageSender.Send(_enemyHits[i], 1f);
-        }
+        UtilTool.Combat.DamageAllTargetNonAlloc(
+            _enemyHits,
+            size,
+            _playerController.CurrentStats.CurAtkDmg * _firstAttackMultiplier / 100f
+        );
     }
 
     public void DoSecondAttack()
@@ -183,10 +201,11 @@ public class PlayerCombat : CustomMonoBehaviour
         if (size == 0)
             return;
 
-        for (int i = 0; i < size; ++i)
-        {
-            _playerController.DamageSender.Send(_enemyHits[i], 1f);
-        }
+        UtilTool.Combat.DamageAllTargetNonAlloc(
+            _enemyHits,
+            size,
+            _playerController.CurrentStats.CurAtkDmg * _secondAttackMultiplier / 100f
+        );
     }
 
     public void DoThirdAttack()
@@ -203,10 +222,11 @@ public class PlayerCombat : CustomMonoBehaviour
         if (size == 0)
             return;
 
-        for (int i = 0; i < size; ++i)
-        {
-            _playerController.DamageSender.Send(_enemyHits[i], 1f);
-        }
+        UtilTool.Combat.DamageAllTargetNonAlloc(
+            _enemyHits,
+            size,
+            _playerController.CurrentStats.CurAtkDmg * _thirdAttackMultiplier / 100f
+        );
     }
 
     public void DoSpecialAttack_First()
@@ -223,10 +243,13 @@ public class PlayerCombat : CustomMonoBehaviour
         if (size == 0)
             return;
 
-        for (int i = 0; i < size; ++i)
-        {
-            _playerController.DamageSender.Send(_enemyHits[i], 1f);
-        }
+        UtilTool.Combat.DamageAllTargetNonAlloc(
+            _enemyHits,
+            size,
+            _playerController.CurrentStats.CurAtkDmg
+                * _specialAttackFirstMultiplier
+                / 100f
+        );
     }
 
     public void DoSpecialAttack_Second()
@@ -243,13 +266,16 @@ public class PlayerCombat : CustomMonoBehaviour
         if (size == 0)
             return;
 
-        for (int i = 0; i < size; ++i)
-        {
-            _playerController.DamageSender.Send(_enemyHits[i], 1f);
-        }
+        UtilTool.Combat.DamageAllTargetNonAlloc(
+            _enemyHits,
+            size,
+            _playerController.CurrentStats.CurAtkDmg
+                * _specialAttackSecondMultiplier
+                / 100f
+        );
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
         if (_showAirAttackHitBox)

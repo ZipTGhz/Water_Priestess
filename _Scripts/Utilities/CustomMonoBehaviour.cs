@@ -4,8 +4,8 @@ public class CustomMonoBehaviour : MonoBehaviour
 {
     protected virtual void Awake()
     {
-        LoadDynamicData();
         LoadComponents();
+        LoadDynamicData();
         // LoadDefaultValues();
     }
 

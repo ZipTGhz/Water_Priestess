@@ -17,7 +17,7 @@ public class TumbleBehaviour : StateMachineBehaviour
         PlayerInput.Instance.IsTumbleInProgress = true;
 
         _playerController.Rb.velocity = new Vector2(
-            _playerController.GFX.right.x * PlayerInput.Instance.TumbleForce,
+            _playerController.GFX.right.x * _playerController.CurrentStats.DashForce,
             0
         );
     }
