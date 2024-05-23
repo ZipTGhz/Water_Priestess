@@ -179,6 +179,7 @@ public class PlayerCombat : CustomMonoBehaviour
         );
         if (size == 0)
             return;
+        _playerController.CurrentStats.CurMP += 0.25f;
 
         UtilTool.Combat.DamageAllTargetNonAlloc(
             _enemyHits,
@@ -200,6 +201,7 @@ public class PlayerCombat : CustomMonoBehaviour
 
         if (size == 0)
             return;
+        _playerController.CurrentStats.CurMP += 0.25f;
 
         UtilTool.Combat.DamageAllTargetNonAlloc(
             _enemyHits,
@@ -221,6 +223,7 @@ public class PlayerCombat : CustomMonoBehaviour
 
         if (size == 0)
             return;
+        _playerController.CurrentStats.CurMP += 0.25f;
 
         UtilTool.Combat.DamageAllTargetNonAlloc(
             _enemyHits,
@@ -246,9 +249,7 @@ public class PlayerCombat : CustomMonoBehaviour
         UtilTool.Combat.DamageAllTargetNonAlloc(
             _enemyHits,
             size,
-            _playerController.CurrentStats.CurAtkDmg
-                * _specialAttackFirstMultiplier
-                / 100f
+            _playerController.CurrentStats.CurAtkDmg * _specialAttackFirstMultiplier / 100f
         );
     }
 
@@ -269,9 +270,7 @@ public class PlayerCombat : CustomMonoBehaviour
         UtilTool.Combat.DamageAllTargetNonAlloc(
             _enemyHits,
             size,
-            _playerController.CurrentStats.CurAtkDmg
-                * _specialAttackSecondMultiplier
-                / 100f
+            _playerController.CurrentStats.CurAtkDmg * _specialAttackSecondMultiplier / 100f
         );
     }
 

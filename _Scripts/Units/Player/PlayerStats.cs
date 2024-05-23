@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
 {
-    public event Action<StatsEvent, float> OnStatsChangedEvent;
-    public event Action<StatsEvent, float> OnMaxStatsChangedEvent;
-    public event Action OnLevelUpEvent;
+
 
     [SerializeField]
     private PlayerController _playerController;
@@ -71,7 +69,7 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         {
             _curLevel = value;
             MaxEXP = UtilTool.BaseStats.MaxEXP[_curLevel];
-            OnLevelUpEvent?.Invoke();
+            UIManager.OnLevelUpEvent?.Invoke();
         }
     }
     public int MaxEXP
@@ -80,7 +78,7 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         set
         {
             _maxEXP = value;
-            OnMaxStatsChangedEvent?.Invoke(StatsEvent.EXP, _maxEXP);
+            UIManager.OnMaxStatsChangedEvent?.Invoke(StatsEvent.EXP, _maxEXP);
         }
     }
     public int CurEXP
@@ -90,7 +88,7 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         {
             _curEXP = value;
             CheckLevelUp();
-            OnStatsChangedEvent?.Invoke(StatsEvent.EXP, _curEXP);
+            UIManager.OnStatsChangedEvent?.Invoke(StatsEvent.EXP, _curEXP);
         }
     }
 
@@ -102,7 +100,7 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         {
             _maxHP = value;
             _curHP = value;
-            OnMaxStatsChangedEvent?.Invoke(StatsEvent.HP, _maxHP);
+            UIManager.OnMaxStatsChangedEvent?.Invoke(StatsEvent.HP, _maxHP);
         }
     }
     public float CurHP
@@ -111,7 +109,7 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         set
         {
             _curHP = value;
-            OnStatsChangedEvent?.Invoke(StatsEvent.HP, _curHP);
+            UIManager.OnStatsChangedEvent?.Invoke(StatsEvent.HP, _curHP);
         }
     }
 
@@ -123,7 +121,7 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         {
             _maxMP = value;
             _curMP = value;
-            OnMaxStatsChangedEvent?.Invoke(StatsEvent.MP, _maxMP);
+            UIManager.OnMaxStatsChangedEvent?.Invoke(StatsEvent.MP, _maxMP);
         }
     }
     public float CurMP
@@ -132,7 +130,7 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         set
         {
             _curMP = value;
-            OnStatsChangedEvent?.Invoke(StatsEvent.MP, _curMP);
+            UIManager.OnStatsChangedEvent?.Invoke(StatsEvent.MP, _curMP);
         }
     }
 
@@ -187,9 +185,8 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         _playerController = GetComponent<PlayerController>();
     }
 
-    protected override void LoadDynamicData()
+    private void Start()
     {
-        base.LoadDynamicData();
         LoadBaseStats(0, 0, true);
     }
 

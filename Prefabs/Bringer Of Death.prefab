@@ -124,9 +124,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 47.8
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -783,6 +783,14 @@ MonoBehaviour:
   _enemyController: {fileID: 4432756867422189772}
   _baseStats: {fileID: 11400000, guid: fd9939df1b277a746831d47ebfeae011, type: 2}
   _multiplier: 1
+  _maxHP: 0
+  _curHP: 0
+  _curSPD: 0
+  _invulnerable: 0
+  _curAtkDmg: 0
+  _curAtkCD: 0
+  _curObserveCD: 0
+  _expGained: 0
 --- !u!1 &9102399179722401532
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,7 +861,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0.478
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

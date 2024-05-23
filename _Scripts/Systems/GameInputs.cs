@@ -28,13 +28,31 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             ""id"": ""3454c417-7127-435f-99fd-63a7edfcea7b"",
             ""actions"": [
                 {
-                    ""name"": ""Movement"",
+                    ""name"": ""HorizontalInput"",
                     ""type"": ""Value"",
                     ""id"": ""84e71cc2-a738-4dcb-adab-ce2b5de2c5cc"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d4642df-5b72-421b-88fe-9f5affc48c91"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""c21d4e3c-083f-4b37-8e0c-ebf733c265cc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""CommonAttack"",
@@ -66,70 +84,70 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""9737b008-55e4-4460-b02c-1935533715b2"",
-                    ""path"": ""2DVector(mode=1)"",
+                    ""name"": ""Keyboard"",
+                    ""id"": ""06426db2-db11-422b-88e5-d61a0cde6723"",
+                    ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""HorizontalInput"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""1d18b836-f873-494b-8070-d33bc8e169c5"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""94050bff-4231-45ed-bb0b-98f92432bf62"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""c590ffd0-945b-4ca1-9a3b-f0456f6611b2"",
+                    ""name"": ""negative"",
+                    ""id"": ""fd03165f-7234-409c-b22e-ed685c6fc467"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""HorizontalInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""right"",
-                    ""id"": ""d0a317ae-0d19-4652-921b-08772e31a4f7"",
+                    ""name"": ""positive"",
+                    ""id"": ""0e0edebc-a363-4b46-9a4b-0a634d77e66e"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""HorizontalInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""47f97f61-dd2f-4353-8ecd-6f29e808a899"",
-                    ""path"": ""<AndroidJoystick>/stick"",
+                    ""name"": ""Joystick"",
+                    ""id"": ""ebe9e8b3-4315-48f4-b462-55a34ad0ee24"",
+                    ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
+                    ""action"": ""HorizontalInput"",
+                    ""isComposite"": true,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""b0416c6a-97d3-4ea1-a9ef-ed207ea0cef2"",
+                    ""path"": ""<Joystick>/stick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HorizontalInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""1d572802-a607-48aa-849d-b0dacc0cb3fa"",
+                    ""path"": ""<Joystick>/stick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HorizontalInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -161,6 +179,28 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SpecialAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e81e182-b96d-472a-9654-121f4f9a16c2"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e49fc599-2ca8-4f15-835e-427bf1138860"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -687,7 +727,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
+        m_Gameplay_HorizontalInput = m_Gameplay.FindAction("HorizontalInput", throwIfNotFound: true);
+        m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
+        m_Gameplay_Dash = m_Gameplay.FindAction("Dash", throwIfNotFound: true);
         m_Gameplay_CommonAttack = m_Gameplay.FindAction("CommonAttack", throwIfNotFound: true);
         m_Gameplay_Skill = m_Gameplay.FindAction("Skill", throwIfNotFound: true);
         m_Gameplay_SpecialAttack = m_Gameplay.FindAction("SpecialAttack", throwIfNotFound: true);
@@ -764,7 +806,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     // Gameplay
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-    private readonly InputAction m_Gameplay_Movement;
+    private readonly InputAction m_Gameplay_HorizontalInput;
+    private readonly InputAction m_Gameplay_Jump;
+    private readonly InputAction m_Gameplay_Dash;
     private readonly InputAction m_Gameplay_CommonAttack;
     private readonly InputAction m_Gameplay_Skill;
     private readonly InputAction m_Gameplay_SpecialAttack;
@@ -772,7 +816,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     {
         private @GameInputs m_Wrapper;
         public GameplayActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
+        public InputAction @HorizontalInput => m_Wrapper.m_Gameplay_HorizontalInput;
+        public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
+        public InputAction @Dash => m_Wrapper.m_Gameplay_Dash;
         public InputAction @CommonAttack => m_Wrapper.m_Gameplay_CommonAttack;
         public InputAction @Skill => m_Wrapper.m_Gameplay_Skill;
         public InputAction @SpecialAttack => m_Wrapper.m_Gameplay_SpecialAttack;
@@ -785,9 +831,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-            @Movement.started += instance.OnMovement;
-            @Movement.performed += instance.OnMovement;
-            @Movement.canceled += instance.OnMovement;
+            @HorizontalInput.started += instance.OnHorizontalInput;
+            @HorizontalInput.performed += instance.OnHorizontalInput;
+            @HorizontalInput.canceled += instance.OnHorizontalInput;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
             @CommonAttack.started += instance.OnCommonAttack;
             @CommonAttack.performed += instance.OnCommonAttack;
             @CommonAttack.canceled += instance.OnCommonAttack;
@@ -801,9 +853,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IGameplayActions instance)
         {
-            @Movement.started -= instance.OnMovement;
-            @Movement.performed -= instance.OnMovement;
-            @Movement.canceled -= instance.OnMovement;
+            @HorizontalInput.started -= instance.OnHorizontalInput;
+            @HorizontalInput.performed -= instance.OnHorizontalInput;
+            @HorizontalInput.canceled -= instance.OnHorizontalInput;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
             @CommonAttack.started -= instance.OnCommonAttack;
             @CommonAttack.performed -= instance.OnCommonAttack;
             @CommonAttack.canceled -= instance.OnCommonAttack;
@@ -950,7 +1008,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     public UIActions @UI => new UIActions(this);
     public interface IGameplayActions
     {
-        void OnMovement(InputAction.CallbackContext context);
+        void OnHorizontalInput(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
         void OnCommonAttack(InputAction.CallbackContext context);
         void OnSkill(InputAction.CallbackContext context);
         void OnSpecialAttack(InputAction.CallbackContext context);

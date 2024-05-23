@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class EnemyStats : CustomMonoBehaviour, IDamageable
 {
-    public event Action<float> OnHPChangedEvent;
-    public event Action<float> OnMaxHPChangedEvent;
-
     [SerializeField]
     private EnemyController _enemyController;
 
@@ -51,7 +48,7 @@ public class EnemyStats : CustomMonoBehaviour, IDamageable
         set
         {
             _maxHP = value;
-            OnMaxHPChangedEvent?.Invoke(_maxHP);
+            _enemyController.OnMaxHPChangedEvent?.Invoke(_maxHP);
         }
     }
     public float CurHP
@@ -60,7 +57,7 @@ public class EnemyStats : CustomMonoBehaviour, IDamageable
         set
         {
             _curHP = value;
-            OnHPChangedEvent?.Invoke(_curHP);
+            _enemyController.OnHPChangedEvent?.Invoke(_curHP);
         }
     }
 
@@ -103,20 +100,28 @@ public class EnemyStats : CustomMonoBehaviour, IDamageable
         _enemyController = GetComponent<EnemyController>();
     }
 
-    protected override void LoadDynamicData()
+    private void Start()
     {
-        base.LoadDynamicData();
-        MaxHP = _baseStats.HP * Multiplier;
-        CurHP = MaxHP;
+        LoadDynamicStats();
+        LoadConstantStats();
+    }
 
+    private void LoadConstantStats()
+    {
         CurSPD = _baseStats.MoveSpeed;
-
-        CurAtkDmg = _baseStats.AtkDmg * Multiplier;
-
-        ExpGained = (int)(_baseStats.ExpGained * Multiplier);
 
         CurAtkCD = _baseStats.AtkCD;
         CurObserveCD = _baseStats.ObserveCD;
+    }
+
+    public void LoadDynamicStats()
+    {
+        float curMul = Multiplier + UIManager.Instance.CurLevel * 1f / 2;
+
+        MaxHP = _baseStats.HP * curMul;
+        CurHP = MaxHP;
+        CurAtkDmg = _baseStats.AtkDmg * curMul;
+        ExpGained = (int)(_baseStats.ExpGained * curMul);
     }
 
     public void TakeHP(float value)

@@ -1,9 +1,14 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
+
+    public static Action<StatsEvent, float> OnStatsChangedEvent;
+    public static Action<StatsEvent, float> OnMaxStatsChangedEvent;
+    public static Action OnLevelUpEvent;
 
     [SerializeField]
     private SliderController _hp;
@@ -20,6 +25,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private PlayerStats _playerStats;
 
+    public int CurLevel => _playerStats.CurLevel;
+
     private void Awake()
     {
         if (Instance == null)
@@ -34,16 +41,16 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerStats.OnStatsChangedEvent += UpdateStats;
-        _playerStats.OnMaxStatsChangedEvent += UpdateMaxStats;
-        _playerStats.OnLevelUpEvent += UpdateLevelStats;
+        OnStatsChangedEvent += UpdateStats;
+        OnMaxStatsChangedEvent += UpdateMaxStats;
+        OnLevelUpEvent += UpdateLevelStats;
     }
 
     private void OnDisable()
     {
-        _playerStats.OnStatsChangedEvent -= UpdateStats;
-        _playerStats.OnMaxStatsChangedEvent -= UpdateMaxStats;
-        _playerStats.OnLevelUpEvent += UpdateLevelStats;
+        OnStatsChangedEvent -= UpdateStats;
+        OnMaxStatsChangedEvent -= UpdateMaxStats;
+        OnLevelUpEvent += UpdateLevelStats;
     }
 
     private void UpdateStats(StatsEvent curEvent, float curValue)
@@ -80,7 +87,6 @@ public class UIManager : MonoBehaviour
 
     private void UpdateLevelStats()
     {
-        int curLv = _playerStats.CurLevel;
-        _levelText.SetText((curLv + 1).ToString());
+        _levelText.SetText((CurLevel + 1).ToString());
     }
 }

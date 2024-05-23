@@ -3,51 +3,60 @@ using UnityEngine;
 
 public class EnemyController : UnitController
 {
-    [Header("ENEMY REFERENCES")]
-    [SerializeField]
-    private EnemyStats _enemyStats;
+	public Action<float> OnHPChangedEvent;
+	public Action<float> OnMaxHPChangedEvent;
 
-    [SerializeField]
-    private EnemyAI _ai;
+	[Header("ENEMY REFERENCES")]
+	[SerializeField]
+	private EnemyStats _enemyStats;
 
-    [SerializeField]
-    private SliderController _hp;
+	[SerializeField]
+	private EnemyAI _ai;
 
-    //GETTERS & SETTERS
-    public EnemyStats CurrentStats
-    {
-        get => _enemyStats;
-        set => _enemyStats = value;
-    }
-    public EnemyAI AI => _ai;
+	[SerializeField]
+	private SliderController _hp;
 
-    private void OnEnable()
-    {
-        _enemyStats.OnHPChangedEvent += UpdateHP;
-        _enemyStats.OnMaxHPChangedEvent += UpdateMaxHP;
-    }
+	//GETTERS & SETTERS
+	public EnemyStats CurrentStats
+	{
+		get => _enemyStats;
+		set => _enemyStats = value;
+	}
+	public EnemyAI AI => _ai;
 
-    private void OnDisable()
-    {
-        _enemyStats.OnHPChangedEvent -= UpdateHP;
-        _enemyStats.OnMaxHPChangedEvent -= UpdateMaxHP;
-    }
+	private void OnEnable()
+	{
+		OnHPChangedEvent += UpdateHP;
+		OnMaxHPChangedEvent += UpdateMaxHP;
+	}
 
-    private void UpdateMaxHP(float maxValue)
-    {
-        _hp.SetMaxValue(maxValue);
-    }
+	private void OnDisable()
+	{
+		OnHPChangedEvent -= UpdateHP;
+		OnMaxHPChangedEvent -= UpdateMaxHP;
+	}
 
-    private void UpdateHP(float currentValue)
-    {
-        _hp.SetValue(currentValue);
-    }
+	private void UpdateMaxHP(float maxValue)
+	{
+		_hp.SetMaxValue(maxValue);
+	}
 
-    protected override void LoadComponents()
-    {
-        base.LoadComponents();
-        _enemyStats = GetComponent<EnemyStats>();
-        _ai = GetComponent<EnemyAI>();
-        _hp = GetComponentInChildren<SliderController>();
-    }
+	private void UpdateHP(float currentValue)
+	{
+		_hp.SetValue(currentValue);
+	}
+
+	protected override void LoadComponents()
+	{
+		base.LoadComponents();
+		_enemyStats = GetComponent<EnemyStats>();
+		_ai = GetComponent<EnemyAI>();
+		_hp = GetComponentInChildren<SliderController>();
+	}
+
+	public void ReSpawn()
+	{
+		_ai.ObserveTime = 0f;
+		_enemyStats.LoadDynamicStats();
+	}
 }

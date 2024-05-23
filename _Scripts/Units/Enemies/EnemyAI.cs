@@ -38,7 +38,12 @@ public abstract class EnemyAI : CustomMonoBehaviour
     private readonly Collider2D[] _hitInfo = new Collider2D[4];
 
     //GETTERS & SETTERS
-    public LayerMask PlayerMask;
+    public float ObserveTime
+    {
+        get => _observeTime;
+        set => _observeTime = value;
+    }
+    public LayerMask PlayerMask => _playerMask;
     public float DirX
     {
         get => _dirX;
@@ -66,7 +71,10 @@ public abstract class EnemyAI : CustomMonoBehaviour
     {
         //kiểm tra xem người chơi có ở tầm mắt của đối tượng hay không
         DetectPlayerInRange();
-        _enemyController.Animator.SetFloat(NameHash.XFloat, _enemyController.Rb.velocity.magnitude);
+        _enemyController.Animator.SetFloat(
+            NameHash.DirXFloat,
+            _enemyController.Rb.velocity.magnitude
+        );
 
         //Nếu như không => 	di chuyển qua lại giữa 2 cực trái và phải (FixedUpdate)
         if (_isDetectedPlayer == false) { }

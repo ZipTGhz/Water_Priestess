@@ -30,12 +30,7 @@ public abstract class UnitController : CustomMonoBehaviour
         _animator = gfxObject.GetComponent<Animator>();
     }
 
-    public void ActivateUnit()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void DeactivateUnit()
+    public virtual void DeactivateUnit()
     {
         gameObject.SetActive(false);
     }
