@@ -9,6 +9,7 @@ public class Systems : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            Application.targetFrameRate = 60;
             DontDestroyOnLoad(gameObject);
         }
         else

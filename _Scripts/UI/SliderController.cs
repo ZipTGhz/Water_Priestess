@@ -10,9 +10,6 @@ public class SliderController : CustomMonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _text;
 
-    //Default is MAX
-    public ValueMode ValueMode = ValueMode.Max;
-
     //Default is Fraction
     public TextMode TextMode = TextMode.Fraction;
 
@@ -26,15 +23,6 @@ public class SliderController : CustomMonoBehaviour
     public void SetMaxValue(float maxValue)
     {
         _slider.maxValue = maxValue;
-        switch (ValueMode)
-        {
-            case ValueMode.Min:
-                _slider.value = 0;
-                break;
-            case ValueMode.Max:
-                _slider.value = maxValue;
-                break;
-        }
         SetText(TextMode);
     }
 
@@ -61,13 +49,6 @@ public class SliderController : CustomMonoBehaviour
                 break;
         }
     }
-}
-
-public enum ValueMode
-{
-    None,
-    Min,
-    Max
 }
 
 public enum TextMode

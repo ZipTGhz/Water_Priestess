@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74e7dbc10ebd75f4d8c1c743bb115462, type: 3}
+  m_Name: Iron Helmet
+  m_EditorClassIdentifier: 
+  _itemName: 102
+  _itemDescription: 'An iron helmet that offers essential head protection. A good
+    starting point for new warriors.
+
+
+    MP + 10'
+  _itemSprite: {fileID: -1797969353, guid: 91f987c3c7649f0438528981dc0c7183, type: 3}
+  _hp: 0
+  _mp: 10
+  _atk: 0
+  _spd: 0

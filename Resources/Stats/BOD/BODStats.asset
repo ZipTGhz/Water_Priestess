@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b33ee146ac313d4695f41a91689dbc2, type: 3}
   m_Name: BODStats
   m_EditorClassIdentifier: 
-  _hP: 10
-  _atkDmg: 2
+  _hP: 5
+  _atkDmg: 0.75
   _moveSpeed: 3
   _atkCD: 3
   _observeCD: 3

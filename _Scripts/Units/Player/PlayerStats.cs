@@ -1,10 +1,7 @@
-using System;
 using UnityEngine;
 
 public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
 {
-
-
     [SerializeField]
     private PlayerController _playerController;
 
@@ -99,7 +96,6 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         set
         {
             _maxHP = value;
-            _curHP = value;
             UIManager.OnMaxStatsChangedEvent?.Invoke(StatsEvent.HP, _maxHP);
         }
     }
@@ -108,7 +104,7 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         get => _curHP;
         set
         {
-            _curHP = value;
+            _curHP = Mathf.Clamp(value, 0, MaxHP);
             UIManager.OnStatsChangedEvent?.Invoke(StatsEvent.HP, _curHP);
         }
     }
@@ -120,7 +116,6 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         set
         {
             _maxMP = value;
-            _curMP = value;
             UIManager.OnMaxStatsChangedEvent?.Invoke(StatsEvent.MP, _maxMP);
         }
     }
@@ -129,7 +124,7 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         get => _curMP;
         set
         {
-            _curMP = value;
+            _curMP = Mathf.Clamp(value, 0, MaxMP);
             UIManager.OnStatsChangedEvent?.Invoke(StatsEvent.MP, _curMP);
         }
     }
@@ -209,8 +204,13 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
         if (isNewGame)
         {
             MaxHP = UtilTool.BaseStats.BaseHP[CurLevel];
+            CurHP = MaxHP;
+
             MaxMP = UtilTool.BaseStats.BaseMP[CurLevel];
+            CurMP = MaxMP;
+
             MaxEXP = UtilTool.BaseStats.MaxEXP[CurLevel];
+            CurEXP = 0;
 
             CurAtkDmg = UtilTool.BaseStats.BaseATK[CurLevel];
             CurSPD = UtilTool.BaseStats.BaseSPD;
@@ -282,7 +282,11 @@ public class PlayerStats : CustomMonoBehaviour, IDamageable, IEXPGainer, IMPUser
 
         //FILL NEW BASE STATS
         MaxHP += UtilTool.BaseStats.BaseHP[CurLevel];
+        CurHP = MaxHP;
+
         MaxMP += UtilTool.BaseStats.BaseMP[CurLevel];
+        CurMP = MaxMP;
+
         CurAtkDmg += UtilTool.BaseStats.BaseATK[CurLevel];
     }
 

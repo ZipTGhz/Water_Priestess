@@ -16,9 +16,9 @@ public class CustomMonoBehaviour : MonoBehaviour
         LoadDefaultValues();
     }
 
+    protected virtual void LoadComponents() { }
+
     protected virtual void LoadDynamicData() { }
 
     protected virtual void LoadDefaultValues() { }
-
-    protected virtual void LoadComponents() { }
 }
